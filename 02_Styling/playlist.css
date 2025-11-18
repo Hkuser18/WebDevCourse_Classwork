@@ -1,0 +1,47 @@
+table {
+    width: 80%;
+    border-collapse: collapse;
+    margin: 20px auto;
+    font-family: Arial, sans-serif;
+}
+
+th {
+    background-color: #007BFF;
+    /* blue header */
+    color: white;
+    padding: 10px;
+    text-align: left;
+}
+
+td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+    /* alternate row color */
+}
+
+tr:hover {
+    background-color: #e0f0ff;
+    /* highlight on hover */
+}
+
+iframe {
+    width: 100%;
+    max-width: 200px;
+    /* control the size */
+    height: 113px;
+    border: none;
+    border-radius: 6px;
+}
+
+img {
+    width: 150px;
+    /* adjust size */
+    height: auto;
+    /* keep proportions */
+    border-radius: 6px;
+    /* optional: rounded corners */
+}
