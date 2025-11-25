@@ -1,3 +1,7 @@
+document.addEventListener('DOMContentLoaded', () => {
+    renderSongs();
+});
+
 //-- GEt HTML DOM element references
 const form = document.getElementById('songForm');
 const list = document.getElementById('songList');
@@ -37,8 +41,7 @@ function saveAndRender() {
 
     localStorage.setItem('playlist', JSON.stringify(songs));
 
-    //TODO - reload ui
-
+    //reloads ui
     renderSongs();
 
 }
@@ -66,3 +69,13 @@ function renderSongs() {
         list.appendChild(row);
     });
 }
+
+//delete song by ID
+function deleteSong(id) {
+    if (confirm('Are you sure?')) {
+        // Filter out the song with the matching ID
+        songs = songs.filter(song => song.id !== id);
+        saveAndRender();
+    }
+}
+
