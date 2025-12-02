@@ -56,7 +56,7 @@ function renderSongs() {
 
         row.innerHTML = `
             <td>${song.title}</td>
-            <td><a href="${song.url}" target="_blank" class="text-info">Watch</a></td>
+            <td><img src="${song.url}" alt="${song.title}" class="img-thumbnail" style="max-width: 100px;"></td>
             <td class="text-end">
                 <button class="btn btn-sm btn-warning me-2" onclick="editSong(${song.id})">
                     <i class="fas fa-edit"></i>

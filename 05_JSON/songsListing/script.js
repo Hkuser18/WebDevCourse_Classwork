@@ -51,18 +51,22 @@ form.addEventListener('submit', (e) => {
         songs[index].title = title;
         songs[index].url = url;
         songs[index].rating = Number(rating);
+        songs[index].vidId = url.split('v=')[1].slice(0, 11); // Update Video ID
         // Reset Button
         submitBtn.innerHTML = '<i class="fas fa-plus"></i> Add';
         submitBtn.classList.replace('btn-warning', 'btn-success');
         document.getElementById('songId').value = '';
     } else {
         // --- ADD MODE ---
+        const vidId = url.split('v=')[1].slice(0, 11); // Extract Video ID from URL
+        //const vidTitle =
         const song = {
             id: Date.now(), //Unique ID based on timestamp
             title: title,
             url: url,
             rating: Number(rating),
-            dateAdded: Date.now()
+            dateAdded: Date.now(),
+            vidId: vidId
         };
         songs.push(song);
     }
@@ -70,6 +74,58 @@ form.addEventListener('submit', (e) => {
     saveAndRender();
     form.reset();
 });
+
+//handler for radio button change to sort songs
+function handleRadioChange() {
+    const selectedRadio = document.querySelector('input[name="radioSort"]:checked'); // Get the selected radio button
+
+    if (selectedRadio) {
+        const selectedId = selectedRadio.id;
+        console.log("Selected radio button:", selectedId);
+
+        // Perform actions based on which radio button is selected
+        switch (selectedId) {
+            case 'radioName1':
+                console.log("Sorting by Name");
+                // You can implement your sorting logic here for "Name"
+                break;
+            case 'radioAdd1':
+                console.log("Sorting by Last Added");
+                // Implement sorting logic for "Last Added"
+                break;
+            case 'radioRate1':
+                console.log("Sorting by Rating");
+                // Implement sorting logic for "Rating"
+                break;
+            default:
+                console.log("No valid option selected");
+        }
+    }
+}
+
+// Attach the event listener to the radio buttons
+const radioButtons = document.querySelectorAll('input[name="radioSort"]');
+radioButtons.forEach(radio => {
+    radio.addEventListener('change', handleRadioChange);
+});
+
+function sortSongs(method) {
+    switch (method) {
+        case 'name':
+            songs.sort((a, b) => a.title.localeCompare(b.title));
+            break;
+        case 'dateAdded':
+            songs.sort((a, b) => b.dateAdded - a.dateAdded);
+            break;
+        case 'rating':
+            songs.sort((a, b) => b.rating - a.rating);
+            break;
+        default:
+            console.log("No valid sorting method provided");
+    }
+    renderSongs();
+}
+
 
 //Save to Local storage and  render UI Table
 function saveAndRender() {
@@ -89,8 +145,8 @@ function renderSongs() {
         const row = document.createElement('tr');
 
         row.innerHTML = `
-            <td>${song.title}</td>
-            <td><a href="${song.url}" target="_blank" class="text-info">Watch</a></td>
+            <td><a href="${song.url}" target="_blank" class="text-info">${song.title}</a></td>
+            <td><img src="https://img.youtube.com/vi/${song.vidId}/maxresdefault.jpg" alt="${song.title}" class="img-thumbnail" style="max-width: 250px;"></td>
             <td>${song.rating}</td>
             <td class="text-end">
                 <button class="btn btn-sm btn-warning me-2" onclick="editSong(${song.id})">
