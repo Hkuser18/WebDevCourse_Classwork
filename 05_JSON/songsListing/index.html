@@ -10,9 +10,9 @@
 
 <body class="p-4">
     <div class="container">
-        <h1 class="text-center text-primary mb-4">🎵 Excercise Songs List</h1>
+        <h1 class="text-center text-primary mb-2">🎵 Excercise Songs List</h1>
 
-        <div class="card border-primary mb-4">
+        <div class="card border-primary mb-2">
             <div class="card-body">
                 <form id="songForm" class="row g-2">
                     <input type="hidden" id="songId">
@@ -43,23 +43,32 @@
                 <option value="az">A-Z</option>
                 </select>
         </div>-->
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="radioSort" id="radioName1">
-            <label class="form-check-label" for="radioName1">
-                Name
-            </label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="radioSort" id="radioAdd1" checked>
-            <label class="form-check-label" for="radioAdd1">
-                Last Added
-            </label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="radioSort" id="radioRate1" checked>
-            <label class="form-check-label" for="radioRate1">
-                Rating
-            </label>
+        <div class="d-flex flex-row p-2">
+            <div class="col-6 m-2">
+                <input type="text" id="searchBox" class="form-control" placeholder="Search...">
+            </div>
+            <div class="form-check col-1 m-2">
+                <input class="form-check-input" type="radio" name="radioSort" id="radioName1">
+                <label class="form-check-label" for="radioName1">
+                    Name
+                </label>
+            </div>
+            <div class="form-check col-1 m-2">
+                <input class="form-check-input" type="radio" name="radioSort" id="radioAdd1" checked>
+                <label class="form-check-label" for="radioAdd1">
+                    Added
+                </label>
+            </div>
+            <div class="form-check col-1   m-2">
+                <input class="form-check-input" type="radio" name="radioSort" id="radioRate1" checked>
+                <label class="form-check-label" for="radioRate1">
+                    Rating
+                </label>
+            </div>
+            <div class="col-2 m-2">
+                <button class="btn btn-secondary" id="changeView" data-target="">Clear</button>
+            </div>
+
         </div>
 
 

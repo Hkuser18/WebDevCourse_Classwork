@@ -87,15 +87,15 @@ function handleRadioChange() {
         switch (selectedId) {
             case 'radioName1':
                 console.log("Sorting by Name");
-                // You can implement your sorting logic here for "Name"
+                sortSongs('name');
                 break;
             case 'radioAdd1':
                 console.log("Sorting by Last Added");
-                // Implement sorting logic for "Last Added"
+                sortSongs('dateAdded');
                 break;
             case 'radioRate1':
                 console.log("Sorting by Rating");
-                // Implement sorting logic for "Rating"
+                sortSongs('rating');
                 break;
             default:
                 console.log("No valid option selected");
@@ -132,7 +132,7 @@ function saveAndRender() {
 
     localStorage.setItem('songs', JSON.stringify(songs));
     //TODO RELOAD UI 
-    renderSongs();
+    handleRadioChange();
 }
 
 
