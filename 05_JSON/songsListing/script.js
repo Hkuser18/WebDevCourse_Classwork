@@ -44,21 +44,21 @@ form.addEventListener('submit', (e) => {
     } else {
         document.getElementById('rating').classList.remove('is-invalid');
     }
-
+    //Check if in Edit Mode
     if (id) {
         // --- UPDATE MODE ---
         const index = songs.findIndex(s => s.id == id);
         songs[index].title = title;
         songs[index].url = url;
         songs[index].rating = Number(rating);
-        songs[index].vidId = url.split('v=')[1].slice(0, 11); // Update Video ID
+        songs[index].vidId = url.split('=')[1].slice(0, 11); // Update Video ID
         // Reset Button
         submitBtn.innerHTML = '<i class="fas fa-plus"></i> Add';
         submitBtn.classList.replace('btn-warning', 'btn-success');
         document.getElementById('songId').value = '';
     } else {
         // --- ADD MODE ---
-        const vidId = url.split('v=')[1].slice(0, 11); // Extract Video ID from URL
+        const vidId = url.split('=')[1].slice(0, 11); // Extract Video ID from URL
         //const vidTitle =
         const song = {
             id: Date.now(), //Unique ID based on timestamp
@@ -135,17 +135,40 @@ function saveAndRender() {
     handleRadioChange();
 }
 
+//Change View Button Handler switch between Table and Card View
+function changeView() {
+    const changeViewBtn = document.getElementById('changeView');
+    const tableHeader = document.getElementById('tableHeader');
+    
+    // Toggle Button Icon and View - list icon means currently in Card View, switch to Table View
+    if (changeViewBtn.innerHTML.includes('fa-list')) 
+    {
+        // Switch to Table View
+        changeViewBtn.innerHTML = '<i class="fa fa-cogs"></i>';
+        tableHeader.classList.add('show');
+        renderSongs();
+    }
+    else { 
+        // Switch to Card View
+        changeViewBtn.innerHTML = '<i class="fa fa-list"></i>';
+        tableHeader.classList.remove('show');
+        renderSongs();
+    }
+}
+
 
 //Display Song From Current Updated songs array as tale Rows 
 function renderSongs() {
-    list.innerHTML = ''; // Clear current list
-
+    list.innerHTML = ''; // Clear current list 
+    const changeViewBtn = document.getElementById('changeView');
+    if (!changeViewBtn.innerHTML.includes('fa-list')) 
+    {
     songs.forEach(song => {
         // Create table row
         const row = document.createElement('tr');
 
         row.innerHTML = `
-            <td><a href="${song.url}" target="_blank" class="text-info">${song.title}</a></td>
+            <td><a href="#" class="text-info" onclick="openPlayer(${song.id}); return false;">${song.title}</a></td>
             <td><img src="https://img.youtube.com/vi/${song.vidId}/maxresdefault.jpg" alt="${song.title}" class="img-thumbnail" style="max-width: 250px;"></td>
             <td>${song.rating}</td>
             <td class="text-end">
@@ -159,8 +182,44 @@ function renderSongs() {
         `;
         list.appendChild(row);
     });
+    }
+    else {
+        // Build a responsive grid: 2 per row on md, 3 per row on lg+
+        const grid = document.createElement('div');
+        grid.classList.add('row', 'g-3', 'mx-0');
+
+        songs.forEach(song => {
+            const col = document.createElement('div');
+            col.classList.add('col-12', 'col-md-6', 'col-lg-4');
+
+            const card = document.createElement('div');
+            card.classList.add('card', 'h-100');
+
+            card.innerHTML = `
+                <img src="https://img.youtube.com/vi/${song.vidId}/maxresdefault.jpg" class="card-img-top" alt="${song.title}">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title"><a href="#" class="text-info" onclick="openPlayer(${song.id}); return false;">${song.title}</a></h5>
+                    <p class="card-text mb-3">Rating: ${song.rating}</p>
+                    <div class="mt-auto text-end">
+                        <button class="btn btn-sm btn-warning me-2" onclick="editSong(${song.id})">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteSong(${song.id})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            col.appendChild(card);
+            grid.appendChild(col);
+        });
+
+        list.appendChild(grid);
+    }
 }
 
+//Delete Song by ID
 function deleteSong(id) {
     if (confirm('Are you sure?')) {
         // Filter out the song with the matching ID
@@ -169,6 +228,7 @@ function deleteSong(id) {
     }
 }
 
+//Edit Song by ID
 function editSong(id) {
 
     const songToEdit = songs.find(song => song.id === id);
@@ -187,6 +247,7 @@ function editSong(id) {
 
 }
 
+//Update Song in songs array
 function updateSong(id, title, url, rating) {
 
     const index = songs.findIndex(song => song.id == id);
@@ -201,4 +262,25 @@ function updateSong(id, title, url, rating) {
     document.getElementById('songId').value = '';
     submitBtn.innerHTML = '<i class="fas fa-plus"></i> Add';
     submitBtn.classList.replace('btn-warning', 'btn-success');
+}
+
+// Open YouTube player in a Bootstrap modal
+function openPlayer(id) {
+    const song = songs.find(s => s.id === id);
+    if (!song) return;
+
+    const embedUrl = `https://www.youtube.com/embed/${song.vidId}?autoplay=1`;
+    const frame = document.getElementById('playerFrame');
+    const titleEl = document.getElementById('playerTitle');
+    frame.src = embedUrl;
+    titleEl.textContent = song.title;
+
+    const modalEl = document.getElementById('playerModal');
+    const modal = new bootstrap.Modal(modalEl);
+    modal.show();
+
+    // Clear src when modal hides to stop playback
+    modalEl.addEventListener('hidden.bs.modal', () => {
+        frame.src = '';
+    }, { once: true });
 }
