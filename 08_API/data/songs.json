@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "title": "My Humps",
+    "artist": "Metallica",
+    "year": 1992,
+    "mp3": null
+  },
+  {
+    "id": 2,
+    "title": "Lets Get Retarded",
+    "artist": "John Lennon",
+    "year": 1971,
+    "mp3": null
+  },
+  {
+    "id": 3,
+    "title": "Boom Boom Pow",
+    "artist": "Queen",
+    "year": 1975,
+    "mp3": null
+  },
+  {
+    "id": 4,
+    "title": "Sultans of Swing",
+    "artist": "Dire Straits",
+    "year": 1978,
+    "mp3": "/mp3/1765296204019-DireStraits-SultansOfSwing.mp3"
+  }
+]
